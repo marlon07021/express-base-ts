@@ -6,7 +6,7 @@ import loggerMiddleware from './middleware/logger'
 import HomeController from './controllers/home.controller'
 
 const app = new App({
-    port: 5000,
+    port: +process.env.NODE_PORT || 5000,
     controllers: [
         new HomeController()
     ],

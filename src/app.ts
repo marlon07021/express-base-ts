@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Application } from 'express'
+import * as chalk from 'chalk'
 
 class App {
     public app: Application
@@ -42,9 +43,11 @@ class App {
     }
 
     public listen() {
-        this.app.listen(this.port, () => {
-            console.log(`App listening on the http://localhost:${this.port}`)
-        })
+        this.app.listen(this.port, this.onListening)
+    }
+
+    private onListening() {
+        console.log(chalk.green.bgBlack(`Listening on http://0.0.0.0: ${this.port}`))
     }
 }
 
