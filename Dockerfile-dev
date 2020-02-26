@@ -1,0 +1,13 @@
+FROM node:10.15.3
+
+RUN mkdir -p /opt/project
+WORKDIR /opt/project
+
+RUN npm i -g gulp yarn
+RUN npm i -g nodemon
+RUN mkdir ./logs
+COPY . /opt/project
+
+RUN yarn install
+COPY . /opt/project
+EXPOSE 3000

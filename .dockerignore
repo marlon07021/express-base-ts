@@ -1,0 +1,8 @@
+npm-debug.log
+.vscode
+.idea
+.dist
+package-lock.json
+yarn.lock
+node_modules
+locales

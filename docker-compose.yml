@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  nodebase:
+    container_name: backend.dev
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    environment:
+      NODE_ENV: "development"
+      NODE_PORT: "3000"
+    volumes:
+      - ./:/opt/project
+      - /opt/project/node_modules
+    ports:
+      - 3000:3000
+      - 56745:56745
+#    networks:
+#      - mongodb_network
+#    external_links:
+#      - mongodb
+    entrypoint: ["npm", "run", "dev"]
+
+#networks:
+#  mongodb_network:
+#    name: "mongodb_network"
+#    external: true
