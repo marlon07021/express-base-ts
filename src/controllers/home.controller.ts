@@ -1,9 +1,8 @@
 import * as express from 'express'
 import {Request, Response} from 'express'
 
-import IControllerBase from "../interfaces/icontroller.base.interface"
 
-class HomeController implements IControllerBase {
+class HomeController {
     public path = '/'
     public router = express.Router()
 

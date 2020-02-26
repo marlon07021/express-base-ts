@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile-dev
     environment:
-      NODE_ENV: "development"
+      NODE_ENV: "development_container"
       NODE_PORT: "3000"
     volumes:
       - ./:/opt/project

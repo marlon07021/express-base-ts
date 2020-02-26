@@ -1,21 +1,24 @@
 import * as express from 'express'
 import { Application } from 'express'
 import * as chalk from 'chalk'
+import Constants = require("./config/constants/constants");
 
 class App {
     public app: Application
     public port: number
 
     constructor(appInit: {
-        port: number;
-        middleWares: any;
-        controllers: any;
+        port: number
+        middleWares: any
+        plugins: any
+        controllers: any
 
     }) {
         this.app = express()
         this.port = appInit.port
 
         this.middlewares(appInit.middleWares)
+        this.plugins(appInit.plugins)
         this.routes(appInit.controllers)
     }
 
@@ -23,6 +26,14 @@ class App {
         middleWares.forEach(
             middleware => {
                 this.app.use(middleware)
+            }
+        );
+    }
+
+    private plugins(plugins: { forEach: (arg0: (plugin: any) => void) => void; }) {
+        plugins.forEach(
+            plugin => {
+                this.app.use(plugin)
             }
         );
     }
@@ -46,8 +57,8 @@ class App {
         this.app.listen(this.port, this.onListening)
     }
 
-    private onListening() {
-        console.log(chalk.green.bgBlack(`Listening on http://0.0.0.0: ${this.port}`))
+    public onListening() {
+        console.log(chalk.green.bgBlack(`Listening on http://localhost:${Constants.NODE_PORT}`))
     }
 }
 
