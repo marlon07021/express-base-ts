@@ -1,9 +1,9 @@
-import * as express from "express"
+import {RequestHandler} from "express"
 
 interface IWriteController {
-    create: express.RequestHandler
-    update: express.RequestHandler
-    remove: express.RequestHandler
+    create: RequestHandler
+    update: RequestHandler
+    remove: RequestHandler
 }
 
 export default IWriteController

@@ -3,7 +3,7 @@ import IWriteController from "./iwrite.controller"
 import IBaseBusiness from '../../business/base/base.business'
 
 interface IBaseController<T extends IBaseBusiness<Object>> extends IReadController, IWriteController {
-    initRoutes() : any
+    initRoutes(route?: string) : any
 }
 
 export default IBaseController

@@ -1,7 +1,7 @@
-import * as express from "express"
+import { RequestHandler } from "express"
 
 interface IReadController {
-    list: express.RequestHandler
-    find: express.RequestHandler
+    list: RequestHandler
+    find: RequestHandler
 }
 export default IReadController

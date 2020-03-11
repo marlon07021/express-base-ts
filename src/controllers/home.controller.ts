@@ -3,7 +3,6 @@ import {Request, Response} from 'express'
 
 
 class HomeController {
-    public path = '/'
     public router = express.Router()
 
     constructor() {
@@ -14,7 +13,7 @@ class HomeController {
         this.router.get('/', this.index)
     }
 
-    index = (req: Request, res: Response) => {
+    index(req: Request, res: Response) {
         res.status(200).json({error: false, message: 'It works'})
     }
 }
