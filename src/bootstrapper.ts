@@ -10,7 +10,7 @@ import jsonifyPlugin from "./plugins/jsonify";
 import HomeController from './controllers/home.controller'
 import UserController from './controllers/user.controller'
 import Constants = require("./config/constants/constants");
-
+console.log('Create app');
 const app = new App({
     port: Constants.NODE_PORT,
     controllers: [

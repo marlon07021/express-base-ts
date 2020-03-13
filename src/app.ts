@@ -16,9 +16,7 @@ class App {
     }) {
         this.app = express()
         this.port = appInit.port
-
         this.middlewares(appInit.middleWares)
-        this.plugins(appInit.plugins)
         this.routes(appInit.controllers)
     }
 
@@ -54,11 +52,9 @@ class App {
     }
 
     public listen() {
-        this.app.listen(this.port, this.onListening)
-    }
-
-    public onListening() {
-        console.log(chalk.green.bgBlack(`Listening on http://localhost:${Constants.NODE_PORT}`))
+        this.app.listen(this.port, () => {
+            console.log(chalk.green.bgBlack(`Listening on http://localhost:${this.port}`))
+        })
     }
 }
 
