@@ -1,19 +1,20 @@
-import * as express from 'express'
+import { Router } from 'express'
 import {Request, Response} from 'express'
 
 
 class HomeController {
-    public router = express.Router()
+    public path = '/'
+    public router = Router()
 
     constructor() {
         this.initRoutes()
     }
 
-    public initRoutes(): any {
-        this.router.get('/', this.index)
+    public initRoutes(): void {
+        this.router.get(this.path, this.index)
     }
 
-    index(req: Request, res: Response) {
+    index(req: Request, res: Response): void {
         res.status(200).json({error: false, message: 'It works'})
     }
 }

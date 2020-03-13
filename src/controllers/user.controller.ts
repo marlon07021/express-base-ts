@@ -6,13 +6,14 @@ import {IUser, IUserModel} from "../models/user/user.interfaces";
 class UserController implements IBaseController <UserBusiness> {
 
     public router = Router()
+    public path = '/user'
 
     constructor() {
         this.initRoutes()
     }
 
     public initRoutes(): any {
-        this.router.get('/user', this.count)
+        this.router.get(this.path, this.count)
     }
 
     async count(req: Request, res: Response) {

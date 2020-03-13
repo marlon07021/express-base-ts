@@ -1,7 +1,7 @@
 import * as express from 'express'
-import { Application } from 'express'
+import {Application, NextFunction, Request, Response} from 'express'
 import * as chalk from 'chalk'
-import Constants = require("./config/constants/constants");
+import NotFoundException from "./common/exceptions/not.found.exception";
 
 class App {
     public app: Application
@@ -10,7 +10,6 @@ class App {
     constructor(appInit: {
         port: number
         middleWares: any
-        plugins: any
         controllers: any
 
     }) {
@@ -39,6 +38,10 @@ class App {
     private routes(controllers: {forEach: (arg0: (controller: any) => void) => void;}) {
         controllers.forEach(controller => {
             this.app.use('/', controller.router)
+        })
+
+        this.app.get('*', (req: Request, res: Response, next: NextFunction) => {
+            next(new NotFoundException(req.path))
         })
     }
 
