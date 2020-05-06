@@ -4,8 +4,8 @@ import * as chalk from 'chalk'
 import NotFoundException from "./common/exceptions/not.found.exception";
 
 class App {
-    public app: Application
-    public port: number
+    public app: Application;
+    public port: number;
 
     constructor(appInit: {
         port: number
@@ -13,13 +13,13 @@ class App {
         controllers: any
 
     }) {
-        this.app = express()
-        this.port = appInit.port
-        this.middlewares(appInit.middleWares)
-        this.routes(appInit.controllers)
+        this.app = express();
+        this.port = appInit.port;
+        this.middlewares(appInit.middleWares);
+        this.routes(appInit.controllers);
     }
 
-    private middlewares(middleWares: { forEach: (arg0: (middleware: any) => void) => void; }) {
+    private middlewares(middleWares: { forEach: (arg0: (middleware: any) => void) => void; }): void {
         middleWares.forEach(
             middleware => {
                 this.app.use(middleware)
@@ -27,7 +27,7 @@ class App {
         );
     }
 
-    private plugins(plugins: { forEach: (arg0: (plugin: any) => void) => void; }) {
+    private plugins(plugins: { forEach: (arg0: (plugin: any) => void) => void; }): void {
         plugins.forEach(
             plugin => {
                 this.app.use(plugin)
@@ -35,30 +35,30 @@ class App {
         );
     }
 
-    private routes(controllers: {forEach: (arg0: (controller: any) => void) => void;}) {
+    private routes(controllers: {forEach: (arg0: (controller: any) => void) => void;}): void {
         controllers.forEach(controller => {
             this.app.use('/', controller.router)
-        })
+        });
 
         this.app.get('*', (req: Request, res: Response, next: NextFunction) => {
             next(new NotFoundException(req.path))
-        })
+        });
     }
 
-    private assets() {
-        this.app.use(express.static('public'))
-        this.app.use(express.static('views'))
+    private assets(): void {
+        this.app.use(express.static('public'));
+        this.app.use(express.static('views'));
     }
 
-    private template() {
-        this.app.set('view engine', 'pug')
+    private template(): void {
+        this.app.set('view engine', 'pug');
     }
 
-    public listen() {
+    public listen(): void {
         this.app.listen(this.port, () => {
             console.log(chalk.green.bgBlack(`Listening on http://localhost:${this.port}`))
-        })
+        });
     }
 }
 
-export default App
+export default App;

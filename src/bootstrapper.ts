@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser'
 import * as helmet from 'helmet'
 import * as cors from 'cors'
 import loggerMiddleware from './middleware/logger'
-import * as controllers from './controllers'
+import controllers from './controllers'
 
 import Constants = require("./config/constants/constants");
 

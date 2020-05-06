@@ -21,12 +21,12 @@ class DataAccess {
         });
 
         this.mongooseConnection.once("error", error => {
-            console.log(chalk.black.bgRedBright(`Error in mongodb connection: ${error}`))
+            console.log(chalk.black.bgRedBright(`Error in mongodb connection: ${error}`));
             this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, Constants.MONGODB_OPTS);
         });
 
         this.mongooseConnection.once("disconnect", () => {
-            console.log(chalk.green.bgRedBright(`Mongodb got disconnected`))
+            console.log(chalk.green.bgRedBright(`Mongodb got disconnected`));
             this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, Constants.MONGODB_OPTS);
         });
 

@@ -9,4 +9,4 @@ interface IBaseController<T extends IBaseBusiness<Object>> extends IReadControll
     router: Router;
 }
 
-export default IBaseController
+export default IBaseController;

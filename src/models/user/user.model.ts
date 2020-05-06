@@ -1,11 +1,19 @@
-import { IUserModel } from './user.interfaces'
+import {IUser, IUserModel} from './user.interfaces';
 
 class UserModel {
 
-    private _userModel: IUserModel
+    private _userModel: IUser;
 
-    constructor(userModel: IUserModel) {
+    constructor(userModel: IUser) {
         this._userModel = userModel
+    }
+
+    checkPassword(plainPassword: string) {
+        return this._userModel.checkPassword(plainPassword);
+    }
+
+    get id (): string {
+        return this._userModel.id
     }
 
     get firstName (): string {
@@ -19,6 +27,9 @@ class UserModel {
     }
     get password (): string {
         return this._userModel.password
+    }
+    get role (): string {
+        return this._userModel.role
     }
     get refreshToken (): string {
         return this._userModel.refreshToken
@@ -37,7 +48,7 @@ class UserModel {
     }
 }
 
-Object.seal(UserModel)
+Object.seal(UserModel);
 
 export default UserModel
 
