@@ -15,7 +15,7 @@ class UserController implements IBaseController <UserBusiness> {
     }
 
     public initRoutes(): any {
-        this.router.post(this.path, this.create);
+        this.router.post(this.path, [checkJWT, checkRole(["ROLE_ADMIN"])], this.create);
         this.router.get(this.path, [checkJWT, checkRole(["ROLE_ADMIN"])], this.list);
     }
 
