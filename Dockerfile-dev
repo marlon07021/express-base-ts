@@ -8,6 +8,6 @@ RUN npm i -g nodemon
 RUN mkdir ./logs
 COPY . /opt/project
 
-RUN yarn install
+RUN npm install
 COPY . /opt/project
 EXPOSE 3000
