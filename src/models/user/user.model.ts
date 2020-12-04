@@ -1,54 +1,62 @@
-import {IUser, IUserModel} from './user.interfaces';
+import DataAccess from "../../data.access";
+import { IUserModel, IUser } from './user.interfaces'
+import { Schema } from 'mongoose'
+import { comparePassword } from '../../util/crypto'
 
-class UserModel {
+const mongooseConnection = DataAccess.mongooseConnection;
 
-    private _userModel: IUser;
+class UserSchema {
+    static get schema() {
+        const schema = Schema({
+            firstName: {
+                type: String,
+                required: true
+            },
+            lastName: String,
+            username: {
+                type: String,
+                unique: true,
+                required: true,
+                lowercase: true
+            },
+            password: {
+                type: String,
+                required: true
+            },
+            role: {
+                type: String,
+                required: true
+            },
+            refreshToken: String,
+            lastToken: Date,
+            createdAt: {
+                type: Date,
+                required: true,
+                default: new Date()
+            },
+            updatedAt: {
+                type: Date,
+                required: true,
+                default: new Date()
+            },
+            removed: {
+                type: Boolean,
+                required: true,
+                default: false,
+                index: true
+            }
+        });
 
-    constructor(userModel: IUser) {
-        this._userModel = userModel
-    }
+        schema.virtual("fullName").get(() => schema.firstName + " " + schema.lastName);
 
-    checkPassword(plainPassword: string) {
-        return this._userModel.checkPassword(plainPassword);
-    }
+        schema.methods.checkPassword = function(plainPassword){
+            return comparePassword(plainPassword, this.password);
+        };
 
-    get id (): string {
-        return this._userModel.id
-    }
-
-    get firstName (): string {
-        return this._userModel.firstName
-    }
-    get lastName (): string {
-        return this._userModel.lastName
-    }
-    get username (): string {
-        return this._userModel.username
-    }
-    get password (): string {
-        return this._userModel.password
-    }
-    get role (): string {
-        return this._userModel.role
-    }
-    get refreshToken (): string {
-        return this._userModel.refreshToken
-    }
-    get lastToken (): Date {
-        return this._userModel.lastToken
-    }
-    get createdAt (): Date {
-        return this._userModel.createdAt
-    }
-    get updatedAt (): Date {
-        return this._userModel.updatedAt
-    }
-    removed (): boolean {
-        return this._userModel.removed
+        return schema
     }
 }
 
-Object.seal(UserModel);
+const schema = mongooseConnection.model<IUser, IUserModel>("User", UserSchema.schema);
 
-export default UserModel
-
+export default schema;

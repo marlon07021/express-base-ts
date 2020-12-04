@@ -10,9 +10,11 @@ class Constants {
     static DB_PASS: string = process.env.DB_PASS || config[Constants.NODE_ENV].DB_PASS;
     static DB_NAME: string = process.env.DB_NAME || config[Constants.NODE_ENV].DB_NAME;
 
+    //NOTE: Send replica configuration on environment anyways
     static DB_CONNECTION_STRING: string  = process.env.DB_CONNECTION_STRING || `mongodb://${Constants.DB_HOST}:${Constants.DB_PORT}/${Constants.DB_NAME}`;
+
     static MONGODB_OPTS = config.mongoOpts;
-    //TODO: Add support for replica set connection string
+
 }
 Object.seal(Constants);
 export = Constants;

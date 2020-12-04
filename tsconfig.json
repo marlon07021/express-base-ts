@@ -4,7 +4,11 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "typeRoots": [
+      "src/@types", "node_modules/@types"]
   },
   "include": [
     "src/**/*.ts"

@@ -1,22 +1,21 @@
-import { Router, Request, Response } from "express"
-import IBaseController from "./base/ibase.controller"
-import UserBusiness from "../business/user.business"
+import {Router, Request, Response, Application} from "express"
+import {BaseController} from "./base/base.controller"
+import UserBusiness from "../business/user/user.business"
 import {IUser, IUserModel} from "../models/user/user.interfaces";
-import IUserBusiness from "../business/iuser.business";
+import IUserBusiness from "../business/user/iuser.business";
 import {checkJWT, checkRole} from "../middleware/security";
 
-class UserController implements IBaseController <UserBusiness> {
+class UserController extends BaseController {
 
     public router = Router();
-    public path = '/user';
 
-    constructor() {
-        this.initRoutes()
+    constructor(app: Application) {
+        super(app, '/user');
     }
 
     public initRoutes(): any {
-        this.router.post(this.path, [checkJWT, checkRole(["ROLE_ADMIN"])], this.create);
-        this.router.get(this.path, [checkJWT, checkRole(["ROLE_ADMIN"])], this.list);
+        this.router.post('', [checkJWT, checkRole(["ROLE_ADMIN"])], this.create);
+        this.router.get('',  this.list);
     }
 
     public async count(req: Request, res: Response): Promise<void> {
@@ -33,7 +32,7 @@ class UserController implements IBaseController <UserBusiness> {
     public async create(req: Request, res: Response): Promise<void>{
         try {
             const _userBusiness = new UserBusiness();
-            const user: IUserModel = <IUserModel>req.body;
+            const user: IUser = <IUser>req.body;
             await _userBusiness.create(user);
             res.status(201).send();
         } catch (e) {
@@ -46,7 +45,7 @@ class UserController implements IBaseController <UserBusiness> {
         try {
             const _userBusiness = new UserBusiness();
             const id: string = req.params.id;
-            const user = _userBusiness.find(id);
+            const user: IUser = await _userBusiness.find(id);
 
             res.json({error: false, message: 'Ok', data: user});
         } catch (e) {

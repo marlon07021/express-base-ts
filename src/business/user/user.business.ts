@@ -1,7 +1,6 @@
-import UserRepository from "../repositories/user.repository"
+import UserRepository from "../../repositories/user.repository"
 import IUserBusiness from "./iuser.business"
-import {IUser, IUserModel} from "../models/user/user.interfaces"
-import {hashPassword} from "../util/crypto";
+import {IUser} from "../../models/user/user.interfaces"
 
 class UserBusiness implements IUserBusiness{
 
@@ -10,20 +9,24 @@ class UserBusiness implements IUserBusiness{
     constructor() {
         this._userRepository = new UserRepository();
     }
-    create(record: IUserModel) {
-        record.password = hashPassword(record.password);
+
+    public create(record: IUser) {
         return this._userRepository.create(record);
     }
-    find(id: string) {
-        return this._userRepository.find(id);
+
+    createMany(records: IUser[]): Promise<IUser[]> {
+        return this._userRepository.createMany(records);
     }
-    findBy(condition: any) {
-        return this._userRepository.findBy(condition);
+    find(id: string, populate?: any, select?: any) {
+        return this._userRepository.find(id, populate, select);
+    }
+    findBy(condition: any, populate?: any, select?: any) {
+        return this._userRepository.findBy(condition, populate, select);
     }
     list(condition: any = {}, limit: number = 100, skip: number = 0, populate?: any, sort?: any, select?: any) {
         return this._userRepository.list(condition, limit, skip, populate);
     }
-    count(condition: any = {}) {
+    public count(condition: any = {}) {
         return this._userRepository.count(condition);
     }
     remove(id: string) {
@@ -32,10 +35,10 @@ class UserBusiness implements IUserBusiness{
     removeMany(condition: any) {
         return this._userRepository.removeMany(condition);
     }
-    update(id: string, record: IUserModel) {
+    update(id: string, record: IUser) {
         return this._userRepository.update(id, record);
     }
-    updateMany(condition: any, record: IUserModel) {
+    updateMany(condition: any, record: IUser) {
         return this._userRepository.updateMany(condition, record);
     }
 }

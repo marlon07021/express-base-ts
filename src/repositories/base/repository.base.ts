@@ -1,68 +1,94 @@
 import {Document, Model} from 'mongoose'
 import IRead from './iread'
 import IWrite from './iwrite'
-import {IUserModel} from "../../models/user/user.interfaces";
 
-class RepositoryBase<T extends Document> implements IRead<T>, IWrite<T>{
+abstract class RepositoryBase<T extends Document> implements IRead<T>, IWrite<T> {
 
     private _model: Model<Document>;
 
-    constructor(schemaModel: Model<Document>) {
-        this._model = schemaModel
+    constructor(model: Model<Document>) {
+        this._model = model
     }
 
-    public async create(item: T) {
-        item.removed = false;
-        item.createdAt = new Date();
-        return this._model.create(item);
+    public create(record: T): Promise<T> {
+        return <Promise<T>>this._model.create(record);
     }
 
-    public async find(id: string) {
-        return this._model.findOne({_id : id, removed: false}).exec();
+    createMany(records: T[]): Promise<T[]> {
+        return <Promise<T[]>>this._model.create(records);
     }
 
-    public async findBy(condition: any) {
-        if ( !condition.removed ) condition.removed = false;
+    public find(id: string, populate?: any, select?: any): Promise<T> {
+        const query = this._model.findOne({_id: id})
 
-        return this._model.findOne(condition).exec();
+        if (populate)
+            query.populate(populate);
+
+        if (select)
+            query.select(select);
+
+        return <Promise<T>>query.exec();
     }
 
-    public async list(condition?: any, limit?: number, skip?: number, populate?: any, sort?: any, select?: any) {
-        if ( !condition.removed ) condition.removed = false;
+    public findBy(condition: any, populate?: any, select?: any): Promise<T> {
+        const query = this._model.findOne(condition);
 
+        if (populate)
+            query.populate(populate);
+
+        if (select)
+            query.select(select);
+
+        return <Promise<T>>query.exec();
+    }
+
+    public list(condition: any = {}, limit?: number, skip?: number, populate?: any, sort?: any, select?: any): Promise<T[]> {
         const query = this._model.find(condition);
 
-        if ( sort ) query.sort(sort);
-        if ( limit ) query.limit(limit);
-        if ( skip ) query.skip(skip);
-        if ( populate ) query.populate(populate);
-        if ( select ) query.select(select);
+        if (sort) query.sort(sort);
+        if (limit) query.limit(limit);
+        if (skip) query.skip(skip);
+        if (populate) query.populate(populate);
+        if (select) query.select(select);
 
-        return query.exec()
+        return <Promise<T[]>>query.exec()
     }
 
-    public async count(condition: any) {
-        if ( !condition.removed ) condition.removed = false;
+    public async count(condition: any): Promise<number> {
         const query = this._model.countDocuments(condition);
 
         return query.exec();
     }
 
     public async remove(id: string) {
-        return this._model.updateOne({_id: id}, {$set: {removed: true}}).exec();
+        return this._model.remove({_id: id}).exec();
     }
 
+
     public async removeMany(condition: any) {
-        return this._model.updateMany(condition, {$set: {removed: true}}).exec();
+        return this._model.remove(condition).exec();
     };
 
     public async update(id: string, record: T) {
-        record.updatedAt = new Date();
         return this._model.updateOne({_id: id}, {$set: record});
     };
+
+    public async updateBy(condition: any, record: any, upsert = false) {
+        return this._model.findOneAndUpdate(condition, {$set: record}, {new: true, upsert: upsert});
+    }
+
     public async updateMany(condition: any, record: T) {
-        record.updatedAt = new Date();
         return this._model.updateOne(condition, {$set: record});
     }
+
+    public async findOneAndUpdate(condition: any, records: any, populate = null, isNew = false): Promise<T> {
+
+        const query = this._model.findOneAndUpdate(condition, {$set: records}, {new: isNew});
+
+        query.populate(populate);
+
+        return <Promise<T>>query.exec();
+    }
 }
+
 export default RepositoryBase;

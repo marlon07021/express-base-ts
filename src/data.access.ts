@@ -12,7 +12,12 @@ class DataAccess {
 
     static connect (): Mongoose.Connection {
 
-        if(this.mongooseInstance) return this.mongooseInstance;
+        const opts = Constants.MONGODB_OPTS;
+        opts["user"] = Constants.DB_USER;
+        opts["pass"] = Constants.DB_PASS;
+
+        if(this.mongooseInstance)
+            return this.mongooseInstance;
 
         this.mongooseConnection  = Mongoose.connection;
 
@@ -22,15 +27,15 @@ class DataAccess {
 
         this.mongooseConnection.once("error", error => {
             console.log(chalk.black.bgRedBright(`Error in mongodb connection: ${error}`));
-            this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, Constants.MONGODB_OPTS);
+            this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         });
 
         this.mongooseConnection.once("disconnect", () => {
             console.log(chalk.green.bgRedBright(`Mongodb got disconnected`));
-            this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, Constants.MONGODB_OPTS);
+            this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         });
 
-        this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, Constants.MONGODB_OPTS);
+        this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         return this.mongooseInstance;
     }
 

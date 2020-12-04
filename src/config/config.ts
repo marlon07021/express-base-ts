@@ -13,12 +13,12 @@ const config = {
         "DB_PASS": "",
         "DB_NAME": "base_prod"
     },
-    "production_container" : {
+    "staging" : {
         "DB_HOST": "mongodb",
         "DB_PORT": "27017",
         "DB_USER": "",
         "DB_PASS": "",
-        "DB_NAME": "base_prod"
+        "DB_NAME": "base_staging"
     },
     "development" : {
         "DB_HOST": "localhost",
@@ -26,14 +26,8 @@ const config = {
         "DB_USER": "",
         "DB_PASS": "",
         "DB_NAME": "base_dev"
-    },
-    "development_container" : {
-        "DB_HOST": "mongodb",
-        "DB_PORT": "27017",
-        "DB_USER": "",
-        "DB_PASS": "",
-        "DB_NAME": "base_dev"
     }
+
 };
 
 export default config;

@@ -1,15 +1,13 @@
-import {IUser, IUserModel} from "../models/user/user.interfaces"
-import UserSchema from "../models/user/user.schema"
+import {IUser} from "../models/user/user.interfaces"
+import UserModel from "../models/user/user.model"
 import RepositoryBase from "./base/repository.base";
 
-class UserRepository extends RepositoryBase<IUserModel>{
+class UserRepository extends RepositoryBase<IUser>{
     constructor() {
-        super(UserSchema)
+        super(UserModel)
     }
 }
 
 Object.seal(UserRepository);
 
 export default UserRepository
-
-

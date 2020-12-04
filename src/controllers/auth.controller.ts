@@ -1,22 +1,21 @@
-import { Router, Request, Response } from "express"
-import IBaseController from "./base/ibase.controller"
-import UserBusiness from "../business/user.business"
-import {IUser, IUserModel} from "../models/user/user.interfaces";
-import IUserBusiness from "../business/iuser.business";
+import {Router, Request, Response, Application} from "express"
+import UserBusiness from "../business/user/user.business"
+import {IUser} from "../models/user/user.interfaces";
+import IUserBusiness from "../business/user/iuser.business";
 import * as jwt from "jsonwebtoken";
 import Constants = require("../config/constants/constants");
+import {BaseController} from "./base/base.controller";
 
-class AuthController {
+class AuthController extends BaseController {
 
     public router = Router();
-    public path = '/auth';
 
-    constructor() {
-        this.initRoutes()
+    constructor(app: Application) {
+        super(app, '/user');
     }
 
     public initRoutes(): any {
-        this.router.post(this.path + '/login', this.login)
+        this.router.post('/login', this.login)
     }
 
     public async login(req: Request, res: Response): Promise<void> {
@@ -24,7 +23,7 @@ class AuthController {
             const {username, password} = req.body;
 
             const _userBusiness : IUserBusiness = new UserBusiness();
-            const user: IUser = <IUser>(await _userBusiness.findBy({username: username}));
+            const user: IUser = <IUser> await _userBusiness.findBy({username: username});
 
             if ( !user ) {
                 res.status(401).send();

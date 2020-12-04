@@ -1,17 +1,18 @@
-import { Router } from 'express'
+import {Application, Router} from 'express'
 import {Request, Response} from 'express'
+import {BaseController} from "./base/base.controller";
 
 
-class HomeController {
-    public path = '/';
+class HomeController extends BaseController {
+
     public router = Router();
 
-    constructor() {
-        this.initRoutes()
+    constructor(app: Application) {
+        super(app, '/');
     }
 
     public initRoutes(): void {
-        this.router.get(this.path, this.index);
+        this.router.get('', this.index);
     }
 
     index(req: Request, res: Response): void {

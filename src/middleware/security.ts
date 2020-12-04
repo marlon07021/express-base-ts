@@ -1,9 +1,9 @@
 import {Request, Response, NextFunction} from "express";
 import * as jwt from "jsonwebtoken";
 import Constants = require("../config/constants/constants");
-import UserBusiness from "../business/user.business";
-import IUserBusiness from "../business/iuser.business";
-import {IUserModel} from "../models/user/user.interfaces";
+import UserBusiness from "../business/user/user.business";
+import IUserBusiness from "../business/user/iuser.business";
+import {IUser} from "../models/user/user.interfaces";
 
 export const checkJWT = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
@@ -38,12 +38,12 @@ export const checkRole = (roles: Array<string>) => {
         try {
             const id = res.locals.jwtPayload.userId;
             const userBusiness: IUserBusiness = new UserBusiness();
-            const user: IUserModel = await userBusiness.find(id);
+            const user: IUser = await userBusiness.find(id);
             if (!user) {
                 res.status(401).send();
             }
             if ( roles.indexOf(user.role) > -1) {
-                res.locals.user = user;
+                req.user = user;
                 next();
             } else
                 res.status(401).send();

@@ -12,18 +12,20 @@
     "express": "^4.17.1",
     "helmet": "^3.21.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.2",
+    "mongoose": "~5.10.19",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.4"
   },
   "scripts": {
     "dev": "ts-node src/bootstrapper.ts",
     "start": "ts-node dist/bootstrapper.js",
+    "start:dev": "nodemon",
     "build": "tsc -p .",
     "prod": "npm run build && npm run start",
     "test": "test"

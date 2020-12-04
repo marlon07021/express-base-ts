@@ -1,26 +1,33 @@
 version: "3.7"
 services:
   nodebase:
-    container_name: backend.dev
+    container_name: ts-server.dev
     build:
       context: .
       dockerfile: Dockerfile-dev
     environment:
-      NODE_ENV: "development_container"
+      NODE_ENV: "development"
       NODE_PORT: "3000"
+      DB_HOST: "mongodb"
+      DB_USER: ""
+      DB_PASS: ""
+      DB_NAME: "demo"
+      DB_URL: "mongodb://mongodb:27017/demo"
+      DB_CONNECTION_STRING: ""
+      JWT_SECRET: "<randomsecret>"
     volumes:
-      - ./:/opt/project
-      - /opt/project/node_modules
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 3000:3000
-      - 56745:56745
-#    networks:
-#      - mongodb_network
-#    external_links:
-#      - mongodb
-    entrypoint: ["npm", "run", "dev"]
+      - 51119:51119
+    networks:
+      - mongodb_network
+    external_links:
+      - mongodb
+    entrypoint: ["npm", "run", "start:dev"]
 
-#networks:
-#  mongodb_network:
-#    name: "mongodb_network"
-#    external: true
+networks:
+  mongodb_network:
+    name: "mongodb_network"
+    external: true

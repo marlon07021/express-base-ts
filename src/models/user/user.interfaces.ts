@@ -1,6 +1,6 @@
-import { Document, Types } from 'mongoose'
+import { Document } from 'mongoose'
 
-export interface IUserModel extends Document {
+export interface IUserSchema extends Document {
     firstName: string;
     lastName?: string;
     username: string;
@@ -13,10 +13,16 @@ export interface IUserModel extends Document {
     removed: boolean;
 }
 
-interface IUserBase extends IUserModel {
+interface IUserBase extends IUserSchema {
     id: string;
     fullName: string;
     checkPassword(plainPassword: string): boolean;
 }
-export interface IUser extends IUserBase {}
-export interface IUser_populated extends IUserBase {}
+//Populable data
+export interface IUser extends IUserBase {
+    //Tenant: ITenant["id"] | ITenant;
+}
+//Populated data
+export interface IUserModel extends IUserBase {
+    //withTenant(id: string): Promise<IUser>
+}
