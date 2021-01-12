@@ -23,27 +23,21 @@ class DataAccess {
 
         this.mongooseConnection.once("connected", () => {
             console.log(chalk.black.bgGreen(`Connected to mongodb server`))
-            global.dbConnected = true;
         });
 
         this.mongooseConnection.once("error", error => {
             console.log(chalk.black.bgRedBright(`Error in mongodb connection: ${error}`));
-            global.dbConnected = false;
             this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         });
 
         this.mongooseConnection.once("disconnect", () => {
             console.log(chalk.green.bgRedBright(`Mongodb got disconnected`));
-            global.dbConnected = false;
             this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         });
-
-        global.dbConnected = false;
 
         this.mongooseInstance = Mongoose.connect(Constants.DB_CONNECTION_STRING, opts);
         return this.mongooseInstance;
     }
-
 }
 
 DataAccess.connect();
